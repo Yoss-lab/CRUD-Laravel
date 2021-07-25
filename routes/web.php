@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,12 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('verified'
 Route::get('/redirect/{service}','SocialController@redirect');
 
 Route::get('/callback/{service}','SocialController@callback');
+
+Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware'=>['localeSessionRedirect','localizationRedirect','localeViewPath'] ], function(){   
+     Route::group(['prefix' => 'offers'], function(){
+         Route::get('create','CrudController@create');
+         Route::post('store','CrudController@store');
+    });
+  
+});
 
